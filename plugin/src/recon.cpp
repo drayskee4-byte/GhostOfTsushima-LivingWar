@@ -6,9 +6,11 @@
 #include <MinHook.h>
 
 #include <atomic>
+#include <cmath>
 #include <cstdio>
 #include <fstream>
 #include <mutex>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
@@ -45,6 +47,18 @@ struct Sample {
 SRWLOCK g_lock = SRWLOCK_INIT;
 std::vector<Sample> g_buf;
 
+// ---- observer state (guarded by g_obsLock; touched briefly from game-thread detours)
+struct Prev { float max; uint64_t t; int type; };
+SRWLOCK g_obsLock = SRWLOCK_INIT;
+std::unordered_map<uintptr_t, Prev> g_prev;
+std::unordered_set<uintptr_t> g_leaders;
+std::vector<GameEvent> g_events;
+
+bool isLeaderType(int t) {
+    for (int x : g_a.leaderTypes) if (x == t) return true;
+    return false;
+}
+
 uintptr_t playerPtr() {
     return g_a.playerGlobal ? *reinterpret_cast<uintptr_t*>(g_a.playerGlobal) : 0;
 }
@@ -67,7 +81,29 @@ void record(void* c, Kind k, float oldHp, float newHp, void* ret) {
 
 void __fastcall hkSetMax(void* c, float v) {
     g_origSetMax(c, v);
-    if (g_on && c) record(c, SetMax, 0.f, v, _ReturnAddress());
+    if (!g_on || !c) return;
+    record(c, SetMax, 0.f, v, _ReturnAddress());
+    auto p = reinterpret_cast<uintptr_t>(c);
+    if (p == playerPtr()) return;
+    int type = *reinterpret_cast<int32_t*>(static_cast<uint8_t*>(c) + kArchetype);
+    uint64_t now = GetTickCount64();
+    AcquireSRWLockExclusive(&g_obsLock);
+    auto it = g_prev.find(p);
+    bool tracked = g_leaders.count(p) > 0;
+    bool bonus = it != g_prev.end() && now - it->second.t < 2000 && it->second.max > 0 && it->second.type == type &&
+                 v > it->second.max && std::fabs(v / it->second.max - g_a.leaderRatio) < 0.01f;
+    if (tracked && it != g_prev.end() && (type != it->second.type || v < it->second.max * 0.9f)) {
+        // The pooled body was reused for someone else: the old leader is gone.
+        g_leaders.erase(p);
+        g_events.push_back(GameEvent{GameEvent::LeaderGone, p, it->second.type, it->second.max, 0, 0});
+        tracked = false;
+    }
+    if (!tracked && (bonus || isLeaderType(type))) {
+        g_leaders.insert(p);
+        g_events.push_back(GameEvent{GameEvent::LeaderSpawned, p, type, v, v, v});
+    }
+    g_prev[p] = Prev{v, now, type};
+    ReleaseSRWLockExclusive(&g_obsLock);
 }
 
 void __fastcall hkSetHealth(void* c, float v) {
@@ -77,6 +113,25 @@ void __fastcall hkSetHealth(void* c, float v) {
     Kind k = v > old ? Heal : (v <= 0.f && old > 0.f ? Death : Damage);
     if (k == Heal) return;   // heals are noise for the census
     record(c, k, old, v, _ReturnAddress());
+    auto p = reinterpret_cast<uintptr_t>(c);
+    float mx = *reinterpret_cast<float*>(static_cast<uint8_t*>(c) + kMaxHealth);
+    if (p == playerPtr()) {
+        if (k == Death) {
+            AcquireSRWLockExclusive(&g_obsLock);
+            g_events.push_back(GameEvent{GameEvent::PlayerDied, p, 0, mx, old, v});
+            ReleaseSRWLockExclusive(&g_obsLock);
+        }
+        return;
+    }
+    AcquireSRWLockExclusive(&g_obsLock);
+    if (g_leaders.count(p)) {
+        int type = *reinterpret_cast<int32_t*>(static_cast<uint8_t*>(c) + kArchetype);
+        g_events.push_back(GameEvent{k == Death ? GameEvent::LeaderDied : GameEvent::LeaderDamaged, p, type, mx, old, v});
+        if (k == Death) g_leaders.erase(p);
+    } else if (k == Death) {
+        g_events.push_back(GameEvent{GameEvent::SoldierDied, p, 0, mx, old, v});
+    }
+    ReleaseSRWLockExclusive(&g_obsLock);
 }
 
 const char* kindName(uint8_t k) {
@@ -133,6 +188,15 @@ void reconStop() {
     MH_DisableHook(MH_ALL_HOOKS);
     reconFlush();
     // Leave MinHook initialised: the game may still be inside a trampoline during shutdown.
+}
+
+std::vector<GameEvent> observerTakeEvents() {
+    std::vector<GameEvent> out;
+    AcquireSRWLockExclusive(&g_obsLock);
+    out.swap(g_events);
+    if (g_prev.size() > 20000) g_prev.clear();   // bodies are pooled; this only bounds memory
+    ReleaseSRWLockExclusive(&g_obsLock);
+    return out;
 }
 
 std::string reconStatus() {

@@ -33,3 +33,9 @@ All **96/96** signatures from Master Thyself 1.10.0 match this build, each at ex
 - **SetHealth is NOT the hit path.** 336 of 337 "damage" records came from inside SetMaxHealth (caller exe+0x69F723 clamping health). Normal hits update health somewhere else. Only killing blows reach SetHealth, from exe+0x6A128E.
 - **KillCharacter = exe+0x6A1250** `(Character* c, int64 rdx /* -1 = no killer? */, int64 r8, uint8 r9b)`: SetHealth(c, 0) → exe+0x69DF00(c, 0) → exe+0x69ED10(c, 3, 0x80000000, 0). **Next: hook it to get deaths and, possibly, killer ids.**
 - Only two direct writes to `+0x1974` exist (SetHealth, plus a constant 100.0 at exe+0x689CEA). The per-hit damage path must work through another component (`[c+0x16F8]` is passed to health-change notifiers). To find.
+
+## Act 2 recon (3 marked camp leaders)
+- Health changes from real hits go through SetHealth from **exe+0x694822** (the combat damage path), 70 per hit in these fights. The prologue rarely showed them because enemies died to one move.
+- `+0x3E84` behaves as an enemy **type** in the open world (14/15 = basic soldiers at 50 hp; 41/42 = 184; 44 = 300; 37 = 255 base...).
+- **Leader marker:** right after spawn, the game calls SetMaxHealth a second time (same caller exe+0x6944D3) with **base x 1.75**: type 37 255→446.2 and type 42 184→322. A type-35 leader spawned with a flat 300 (no bonus). Leader rule = x1.75 bonus OR type in `LeaderTypes` (35).
+- Bodies are pooled: the same Character* is reused for new characters, so a type or max-health change on a tracked pointer means the old character is gone.

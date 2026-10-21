@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0 — 2026-10-21 (observer: automatic leader tracking)
+- **Leaders are now recognised automatically.** In-game recon showed the game re-sets a camp leader's max health to base x1.75 straight after spawning (types 37: 255→446, 42: 184→322), plus a flat-300 type 35. Replayed on the recon data, the rule caught 3/3 marked leaders with no false leader deaths.
+- Each detected leader gets a Living War identity as he spawns. His hits (SetHealth via the combat path exe+0x694822), his death, soldiers dying around him and Jin's own death are fed into the Nemesis core with no hotkeys.
+- Death method heuristic: killed in one blow from full health = Stealth (assassination), otherwise Melee.
+- Leaders who leave without ever fighting are released with no record (`LivingWar::onLeaderReleased`).
+- New `[Observer]` settings: `Enabled`, `LeaderHealthRatio`, `LeaderTypes`, `MaxRank`. The default region is Toyotama for the Act 2 test save.
+
 ## 0.2.0 — 2026-10-21 (recon build)
 - `GotSignatures.ini`: 96 game signatures from Master Thyself 1.10.0 (credit Musky / Destinate / cfemen), plus Living War's own SetMaxHealth and SetHealth. **98/98 verified** against Steam build 0x6A3AAFBD.
 - Plugin now pinned to that build (`ExpectedBuildTimestamp`). Any other build stays in Chronicle mode only.

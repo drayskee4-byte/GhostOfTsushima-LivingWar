@@ -7,7 +7,9 @@
 //     nemesis loop (identities, memories, scars, revenge, promotions, succession)
 //   - F9 writes and opens the hierarchy page
 //   - probes GotSignatures.ini and logs which hooks this game build supports
-// What doesn't work yet: automatic detection of fights and changing enemies in-game.
+//   - OBSERVER (0.3.0): recognises camp/patrol leaders as they spawn (the game gives them x1.75
+//     health), gives each a Living War identity, follows the fight, and records how it ended
+// What doesn't work yet: changing enemies in-game (health, retinue, tactics).
 #include "plugin.hpp"
 
 #include <shellapi.h>
@@ -75,7 +77,7 @@ DWORD WINAPI pluginThread(LPVOID module) {
     Ini ini;
     ini.load((fs::path(pluginDir) / "LivingWar.ini").string());
     lw::Log::setLevel(ini.getBool("General", "DebugLog", false) ? lw::LogLevel::Debug : lw::LogLevel::Info);
-    lw::Log::info("==== Living War 0.2.0 starting ====");
+    lw::Log::info("==== Living War 0.3.0 starting ====");
     if (!ini.getBool("General", "Enabled", true)) { lw::Log::info("disabled in LivingWar.ini"); return 0; }
 
     Sleep(static_cast<DWORD>(ini.getInt("General", "StartDelaySeconds", 10) * 1000));   // let the game finish booting
@@ -95,6 +97,14 @@ DWORD WINAPI pluginThread(LPVOID module) {
         ra.setMaxHealth = adapter->addr("lw_setmaxhealth");
         ra.setHealth = adapter->addr("lw_sethealth");
         ra.playerGlobal = adapter->addr("pplayer");
+        try { ra.leaderRatio = std::stof(ini.get("Observer", "LeaderHealthRatio", "1.75")); } catch (...) {}
+        {
+            std::string lt = ini.get("Observer", "LeaderTypes", "35"), cur;
+            for (char ch : lt + ",") {
+                if (ch == ',' || ch == ' ') { if (!cur.empty()) { try { ra.leaderTypes.push_back(std::stoi(cur)); } catch (...) {} cur.clear(); } }
+                else cur += ch;
+            }
+        }
         recon = reconStart(ra, (fs::path(dataDir) / "census.csv").string());
     }
     const int markKey = ini.getInt("Recon", "Mark", VK_F11);
@@ -118,6 +128,11 @@ DWORD WINAPI pluginThread(LPVOID module) {
         for (int i = 0; i < 4; ++i) if (r == kRegions[i]) regionIdx = i;
     }
 
+    const bool observer = recon && ini.getBool("Observer", "Enabled", true);
+    const int leaderMaxRank = ini.getInt("Observer", "MaxRank", 2);
+    std::map<lw::ActorHandle, ULONGLONG> lastHit;   // when each tracked leader was last hit by Jin
+    if (observer) lw::Log::info("observer: automatic leader tracking ON");
+
     Edge edge;
     lw::ActorHandle engaged = 0, nextHandle = 1;
     ULONGLONG playMs = 0, last = GetTickCount64();
@@ -136,6 +151,61 @@ DWORD WINAPI pluginThread(LPVOID module) {
             static ULONGLONG lastFlush = 0, lastStatus = 0;
             if (now - lastFlush > 1000) { reconFlush(); lastFlush = now; }
             if (now - lastStatus > 60000) { lw::Log::info(reconStatus()); lastStatus = now; }
+        }
+        if (observer) {
+            for (auto& e : observerTakeEvents()) {
+                lw::ActorHandle h = static_cast<lw::ActorHandle>(e.entity);
+                switch (e.kind) {
+                case GameEvent::LeaderSpawned:
+                    if (!war.isTracked(h)) {
+                        auto p = war.onLeaderSpawned(h, kRegions[regionIdx], leaderMaxRank);
+                        if (p) lw::Log::info(lw::fmt("observer: leader type %d (%.0f hp) is %s", e.type, e.maxHp, p->title.c_str()));
+                    }
+                    break;
+                case GameEvent::LeaderDamaged:
+                    if (war.isTracked(h)) {
+                        if (!lastHit.count(h)) adapter->notify("You face " + war.trackedName(h), "the fight is on");
+                        lastHit[h] = now;
+                        war.onPlayerDetected(h);
+                        war.onLeaderDamaged(h, lw::Wound::Cut, static_cast<int>(e.oldHp - e.newHp), lw::Method::Melee);
+                    }
+                    break;
+                case GameEvent::LeaderDied:
+                    if (war.isTracked(h)) {
+                        // One blow from full health = an assassination; otherwise a fight.
+                        bool oneShot = e.oldHp >= e.maxHp * 0.99f;
+                        lw::Method m = oneShot ? lw::Method::Stealth : lw::Method::Melee;
+                        if (!oneShot) war.onPlayerDetected(h);
+                        war.onLeaderDamaged(h, lw::Wound::Cut, static_cast<int>(e.oldHp), m);
+                        std::string who = war.trackedName(h);
+                        war.onLeaderKilled(h, m);
+                        lastHit.erase(h);
+                        lw::Log::info("observer: " + who + (oneShot ? " assassinated" : " cut down"));
+                    }
+                    break;
+                case GameEvent::LeaderGone:
+                    if (war.isTracked(h)) {
+                        if (war.wasEngaged(h)) war.onEncounterEnded(h); else war.onLeaderReleased(h);
+                        lastHit.erase(h);
+                    }
+                    break;
+                case GameEvent::SoldierDied: {
+                    // Credit the death to the leader Jin was fighting most recently (within a minute).
+                    lw::ActorHandle best = 0; ULONGLONG bestT = 0;
+                    for (auto& kv : lastHit) if (now - kv.second < 60000 && kv.second > bestT) { best = kv.first; bestT = kv.second; }
+                    if (best) war.onSoldierKilled(best);
+                    break;
+                }
+                case GameEvent::PlayerDied: {
+                    lw::ActorHandle best = 0; ULONGLONG bestT = 0;
+                    for (auto& kv : lastHit) if (now - kv.second < 60000 && kv.second > bestT) { best = kv.first; bestT = kv.second; }
+                    war.onPlayerKilled(best);
+                    lastHit.clear();
+                    lw::Log::info("observer: Jin fell" + std::string(best ? " - credited to the leader he was fighting" : ""));
+                    break;
+                }
+                }
+            }
         }
         if (!focus) continue;
         if (recon && edge.pressed(markKey)) { reconMark("leader killed (player mark)"); adapter->notify("Recon", "marked"); }

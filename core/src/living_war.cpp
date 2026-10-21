@@ -116,6 +116,25 @@ void LivingWar::onEncounterEnded(ActorHandle h) {
     finish(h, Outcome::Inconclusive);
 }
 
+void LivingWar::onLeaderReleased(ActorHandle h) {
+    auto it = live_.find(h);
+    if (it == live_.end()) return;
+    nemesis_.markActive(it->second.commander, false);
+    live_.erase(it);
+}
+
+bool LivingWar::wasEngaged(ActorHandle h) const {
+    auto it = live_.find(h);
+    return it != live_.end() && (it->second.detected || !it->second.damage.empty() || it->second.soldiersKilled > 0);
+}
+
+std::string LivingWar::trackedName(ActorHandle h) const {
+    auto it = live_.find(h);
+    if (it == live_.end()) return "";
+    const Commander* c = world_.find(it->second.commander);
+    return c ? c->fullTitle() : "";
+}
+
 void LivingWar::onPlayerKilled(ActorHandle killer) {
     if (killer && tracked(killer)) { finish(killer, Outcome::JinKilled); }
     // Every other tracked leader saw Jin fall: they drove him off.

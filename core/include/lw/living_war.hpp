@@ -35,6 +35,10 @@ public:
     void onPlayerKilled(ActorHandle killerLeader);           // 0 if not by a tracked leader
     void onPlayerEscaped(ActorHandle leader);
     void onEncounterEnded(ActorHandle leader);               // despawned / out of range
+    void onLeaderReleased(ActorHandle leader);               // gone without ever fighting Jin: no record
+    bool isTracked(ActorHandle leader) const { return live_.count(leader) > 0; }
+    bool wasEngaged(ActorHandle leader) const;
+    std::string trackedName(ActorHandle leader) const;
     void onCampLiberated(const std::string& campId, const std::string& region, int menKilled, ActorHandle leader = 0);
     void onGameMinutes(int64_t absoluteMinutes);             // in-game clock
     void setAct(int act);
