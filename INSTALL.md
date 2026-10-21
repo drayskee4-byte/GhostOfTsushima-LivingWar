@@ -34,7 +34,7 @@ Start the game and load your story save. After about 10 seconds, `plugins\Living
 | Numpad 7 | He killed you |
 | Numpad 8 | You escaped |
 | F8 | Cycle region (Izuhara → Toyotama → Kamiagata → Iki) |
-| F9 | Open the hierarchy page (who's alive, who hates you, what they remember) |
+| Home | Open the hierarchy page (who's alive, who hates you, what they remember) |
 | F10 | Save now (it also saves after every fight) |
 
 News appears in `plugins\LivingWar\feed.txt`. Set `CampaignAct` in `LivingWar.ini` as you progress.
