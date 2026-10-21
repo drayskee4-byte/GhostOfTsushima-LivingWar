@@ -45,18 +45,24 @@ jobs:
         with:
           name: LivingWar-windows
           path: dist
-      - name: Publish build to the 'builds' branch
-        if: github.event_name != 'pull_request'
-        shell: pwsh
+  publish:
+    needs: plugin-windows
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: LivingWar-windows
+          path: publish
+      - name: Push to the 'builds' branch
         run: |
+          set -euo pipefail
+          trap 'echo "::error::publish failed at line $LINENO: $BASH_COMMAND"' ERR
+          cd publish
+          echo "Built from ${GITHUB_SHA::7} on $(date -u +%F)" > BUILD.txt
+          git init -q -b builds
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
-          $sha = "${{ github.sha }}".Substring(0,7)
-          New-Item -ItemType Directory -Force publish | Out-Null
-          Copy-Item -Recurse dist/* publish/
-          "Built from main @ $sha" | Out-File publish/BUILD.txt
-          cd publish
-          git init -q -b builds
           git add -A
-          git commit -q -m "LivingWar build $sha"
-          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" builds
+          git commit -q -m "LivingWar build ${GITHUB_SHA::7}"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" builds 2>&1 | sed 's/^/::notice::/'
