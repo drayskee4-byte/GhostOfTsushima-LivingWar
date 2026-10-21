@@ -1,5 +1,11 @@
 name: build
-on: [push, pull_request, workflow_dispatch]
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: write
 jobs:
   core-linux:
     runs-on: ubuntu-latest
@@ -24,7 +30,33 @@ jobs:
           Copy-Item plugin/dist/LivingWar.ini, plugin/dist/GotSignatures.ini dist/plugins/
           Copy-Item build/Release/lwsim.exe dist/
           Copy-Item INSTALL.md, CREDITS.md dist/
+      - name: Bundle Ultimate ASI Loader (MIT, ThirteenAG) as d3d12.dll
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download -R ThirteenAG/Ultimate-ASI-Loader -p "Ultimate-ASI-Loader_x64.zip" -D ual
+          Expand-Archive ual/Ultimate-ASI-Loader_x64.zip -DestinationPath ual/x
+          $dll = Get-ChildItem ual/x -Recurse -Filter *.dll | Select-Object -First 1
+          Copy-Item $dll.FullName dist/d3d12.dll
+          gh release view -R ThirteenAG/Ultimate-ASI-Loader --json tagName -q .tagName | Out-File dist/UltimateASILoader-version.txt
+          Copy-Item ual/x/* -Include *.txt,*.md,LICENSE* dist/ -ErrorAction SilentlyContinue
       - uses: actions/upload-artifact@v4
         with:
           name: LivingWar-windows
           path: dist
+      - name: Publish build to the 'builds' branch
+        if: github.event_name != 'pull_request'
+        shell: pwsh
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          $sha = "${{ github.sha }}".Substring(0,7)
+          New-Item -ItemType Directory -Force publish | Out-Null
+          Copy-Item -Recurse dist/* publish/
+          "Built from main @ $sha" | Out-File publish/BUILD.txt
+          cd publish
+          git init -q -b builds
+          git add -A
+          git commit -q -m "LivingWar build $sha"
+          git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" builds
