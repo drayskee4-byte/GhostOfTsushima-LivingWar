@@ -1,0 +1,7 @@
+# Credits
+
+- **enRAGE: Living World and Nemesis System** (Red Dead Redemption 2) by the enRAGE author: https://www.nexusmods.com/reddeadredemption2/mods/10967 (official Nexus page; mod ID taken from the download's file name, so check the link before publishing). Living War's rules and default tuning (cheat-death odds, rank XP, hate tiers, followers by rank, succession timing, save-safety design) are adapted from enRAGE 0.9.5.1 **with the author's permission**. This is an unofficial adaptation. Report problems with it to Living War, not to enRAGE. No enRAGE code, content files or text are included.
+- **Ultimate ASI Loader** by ThirteenAG and contributors (MIT).
+- **Master Thyself** by Musky (Musky689), https://www.nexusmods.com/ghostoftsushima/mods/735, with foundational Cheat Engine work by **Destinate** and **cfemen**. `plugin/dist/GotSignatures.ini` holds the 96 game signatures from Master Thyself 1.10.0's symbol table, used with credit under its Nexus permissions (modification and conversion allowed with credit; no sale).
+- **GoT Native Loader** proof of concept and **Shadow Strike Story** (ezzysx): they established the ASI loading method and the build-checked hook pattern for this game.
+- Ghost of Tsushima belongs to Sucker Punch Productions / Sony Interactive Entertainment. The PC port is by Nixxes Software. Living War is a fan-made, unofficial, free mod, not affiliated with or endorsed by them.

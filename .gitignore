@@ -1,0 +1,6 @@
+build/
+out/
+.vs/
+LivingWarData/
+*.user
+docs/permission/*.png

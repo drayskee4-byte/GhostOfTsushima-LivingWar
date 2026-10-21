@@ -1,0 +1,677 @@
+{
+ "timestamp": 1782230973,
+ "results": [
+  {
+   "name": "pPlayer",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6006896,
+   "target_rva": 55340832
+  },
+  {
+   "name": "pPlayerManager",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 5524058,
+   "target_rva": 55055456
+  },
+  {
+   "name": "pEntityDefinitionRegistry",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 10264172,
+   "target_rva": 55508352
+  },
+  {
+   "name": "pEntityAttrTable",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6913626,
+   "target_rva": 54217040
+  },
+  {
+   "name": "pGlobalDefinitionRegistry",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 5910936,
+   "target_rva": 21523296
+  },
+  {
+   "name": "pAssetManager",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 5633109,
+   "target_rva": 25128448
+  },
+  {
+   "name": "pAssetLoader",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 8028379,
+   "target_rva": 21614208
+  },
+  {
+   "name": "pDifficultyMode",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6931763,
+   "target_rva": 30289296
+  },
+  {
+   "name": "pMapHash",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 7993842,
+   "target_rva": 54219000
+  },
+  {
+   "name": "TimeState",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6952914,
+   "target_rva": 21536240
+  },
+  {
+   "name": "WorldTime",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 5000566,
+   "target_rva": 21596528
+  },
+  {
+   "name": "WeaponLoadoutTable",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6920974,
+   "target_rva": 21603408
+  },
+  {
+   "name": "AssetSpawnerTable",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 11653390,
+   "target_rva": 25218008
+  },
+  {
+   "name": "CDict",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 5349664,
+   "target_rva": 32232128
+  },
+  {
+   "name": "StrToHash",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 5114480,
+   "target_rva": 5114480
+  },
+  {
+   "name": "IsLegends",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 5875712,
+   "target_rva": 5875712
+  },
+  {
+   "name": "IsObjectContextValid",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 8677488,
+   "target_rva": 8677488
+  },
+  {
+   "name": "FindEntityRegistryByHashId",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 12137952,
+   "target_rva": 12137952
+  },
+  {
+   "name": "FindEntityRegistryBinByHashId",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 12137920,
+   "target_rva": 12137920
+  },
+  {
+   "name": "GetEntityRegistryValueByIndex",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 12137872,
+   "target_rva": 12137872
+  },
+  {
+   "name": "GetOrSpawnEntityByHash",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 12140688,
+   "target_rva": 12140688
+  },
+  {
+   "name": "CreateMetadataCall",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 12138339,
+   "target_rva": 12138339
+  },
+  {
+   "name": "CreateMetadataDescriptor",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 9718715,
+   "target_rva": 9718715
+  },
+  {
+   "name": "CreateEntityMetadata",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 9718688,
+   "target_rva": 9718688
+  },
+  {
+   "name": "EntityMetadataCreationEnd",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 9719524,
+   "target_rva": 9719526
+  },
+  {
+   "name": "EntityMetadataLink",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6947068,
+   "target_rva": 6947068
+  },
+  {
+   "name": "PostEntityMetadataLink",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6947131,
+   "target_rva": 6947142
+  },
+  {
+   "name": "SetMetadataBoundEntity",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 9723904,
+   "target_rva": 9723904
+  },
+  {
+   "name": "EnqueueAssetLoadRequest",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 9553936,
+   "target_rva": 9553936
+  },
+  {
+   "name": "ResolveSourceDefinition",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 5163936,
+   "target_rva": 5163936
+  },
+  {
+   "name": "IsSourceDefinitionAvailable",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 5910928,
+   "target_rva": 5910928
+  },
+  {
+   "name": "TryBuildNearbySpawnTransform",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 10249776,
+   "target_rva": 10249776
+  },
+  {
+   "name": "ApplyEntityTransform",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 9680144,
+   "target_rva": 9680144
+  },
+  {
+   "name": "RequestEntityDespawn",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 8690112,
+   "target_rva": 8690112
+  },
+  {
+   "name": "DespawnContainer",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 10312416,
+   "target_rva": 10312416
+  },
+  {
+   "name": "ReleaseContainer",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 10304832,
+   "target_rva": 10304832
+  },
+  {
+   "name": "BuildRuntimeObjectContainer",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 5913008,
+   "target_rva": 5913008
+  },
+  {
+   "name": "SpawnGroupEnsureCall",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 10761521,
+   "target_rva": 10761521
+  },
+  {
+   "name": "MaxHealthUpdate",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6944278,
+   "target_rva": 6944278
+  },
+  {
+   "name": "MaxStaggerUpdate",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6938957,
+   "target_rva": 6938957
+  },
+  {
+   "name": "OverrideEntityAttrCall",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6932069,
+   "target_rva": 6932069
+  },
+  {
+   "name": "ApplyHelmet",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6865664,
+   "target_rva": 6865664
+  },
+  {
+   "name": "ApplyAttunement",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6945296,
+   "target_rva": 6945296
+  },
+  {
+   "name": "ApplyAttunementEffects",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6945296,
+   "target_rva": 6945296
+  },
+  {
+   "name": "ApplyStatusEffect",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6879920,
+   "target_rva": 6879920
+  },
+  {
+   "name": "RemoveStatusEffects",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6876848,
+   "target_rva": 6876848
+  },
+  {
+   "name": "HasStatusEffect",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6884192,
+   "target_rva": 6884192
+  },
+  {
+   "name": "SetEntityWeaponLoadoutId",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6946240,
+   "target_rva": 6946240
+  },
+  {
+   "name": "OverrideBossLoadout",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 9163486,
+   "target_rva": 9163486
+  },
+  {
+   "name": "SetWeaponLoadoutState",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 11027872,
+   "target_rva": 11027872
+  },
+  {
+   "name": "SetWeaponSwitchPhase",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 11031168,
+   "target_rva": 11031168
+  },
+  {
+   "name": "RecomputeEntityDisposition",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6913504,
+   "target_rva": 6913504
+  },
+  {
+   "name": "RecomputeStepAbilities",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 11320944,
+   "target_rva": 11320944
+  },
+  {
+   "name": "SetEntityArchetype",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6937936,
+   "target_rva": 6937936
+  },
+  {
+   "name": "SetEntityRevivable",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6940896,
+   "target_rva": 6940896
+  },
+  {
+   "name": "HasEntityMetadataFlag",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6884112,
+   "target_rva": 6884112
+  },
+  {
+   "name": "GetCharacterLoadoutId",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 9365744,
+   "target_rva": 9365744
+  },
+  {
+   "name": "SetEntityAsset",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 11625488,
+   "target_rva": 11625488
+  },
+  {
+   "name": "RemoveEntityAsset",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 11583104,
+   "target_rva": 11583104
+  },
+  {
+   "name": "pInventoryLegends",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 5398407,
+   "target_rva": 30291168
+  },
+  {
+   "name": "pInventoryReplay",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 5398407,
+   "target_rva": 30298240
+  },
+  {
+   "name": "pInventoryNormal",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 5398407,
+   "target_rva": 30282224
+  },
+  {
+   "name": "CheckReplaySource",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6932544,
+   "target_rva": 5370656
+  },
+  {
+   "name": "DuelAltStatsCheck",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6932544,
+   "target_rva": 5357488
+  },
+  {
+   "name": "pLegendsResources",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 5136962,
+   "target_rva": 30279072
+  },
+  {
+   "name": "pPlayerCount",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 5519498,
+   "target_rva": 55057728
+  },
+  {
+   "name": "pLocalUserSlot",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 12757623,
+   "target_rva": 55057012
+  },
+  {
+   "name": "pLegendsSession",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 7938432,
+   "target_rva": 55327888
+  },
+  {
+   "name": "pTransmogManager",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 9271251,
+   "target_rva": 55327888
+  },
+  {
+   "name": "pTrickleHealStrength",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6931770,
+   "target_rva": 18012720
+  },
+  {
+   "name": "pFastHealStrength",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 8837213,
+   "target_rva": 18834608
+  },
+  {
+   "name": "pDrainLifeStrength",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 9395102,
+   "target_rva": 18886104
+  },
+  {
+   "name": "spearGripTransform",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 11030055,
+   "target_rva": 18985232
+  },
+  {
+   "name": "katanaGripTransform",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 11030115,
+   "target_rva": 18985184
+  },
+  {
+   "name": "SetWorldModifier",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 8793296,
+   "target_rva": 8793296
+  },
+  {
+   "name": "SetModifierMask",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 8829392,
+   "target_rva": 8829392
+  },
+  {
+   "name": "LinkAnimalCompanion",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 9723584,
+   "target_rva": 9723584
+  },
+  {
+   "name": "SpawnCompanionHorse",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 10264144,
+   "target_rva": 10264144
+  },
+  {
+   "name": "ApplyLegendsGearOverride",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 5833712,
+   "target_rva": 5833712
+  },
+  {
+   "name": "RemoveLegendsGearOverride",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 5830224,
+   "target_rva": 5830224
+  },
+  {
+   "name": "ApplyStoryGearOverride",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 5833664,
+   "target_rva": 5833664
+  },
+  {
+   "name": "RemoveStoryGearOverride",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 5830160,
+   "target_rva": 5830160
+  },
+  {
+   "name": "FindPackedSubobject",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 9623584,
+   "target_rva": 9623584
+  },
+  {
+   "name": "SetReplicatedTransmogSlot",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 11756208,
+   "target_rva": 11756208
+  },
+  {
+   "name": "SetLegendsSkin",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 8828832,
+   "target_rva": 8828832
+  },
+  {
+   "name": "HasLegendsSubobjectFlag",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 8799088,
+   "target_rva": 8799088
+  },
+  {
+   "name": "DispatchConfigEvent",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 8259056,
+   "target_rva": 8259056
+  },
+  {
+   "name": "ClearCompanionManager",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 10750384,
+   "target_rva": 10750384
+  },
+  {
+   "name": "RefreshCompanionManagerState",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 10891888,
+   "target_rva": 10891888
+  },
+  {
+   "name": "RemoveCompanionAtIndex",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 10836672,
+   "target_rva": 10836672
+  },
+  {
+   "name": "GetEntityCompanionManager",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 6919040,
+   "target_rva": 6919040
+  },
+  {
+   "name": "CompanionSweepManager",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 10762559,
+   "target_rva": 10762559
+  },
+  {
+   "name": "CompanionLink",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 11884272,
+   "target_rva": 11884272
+  },
+  {
+   "name": "MoveEntityToCompanionManager",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 10745440,
+   "target_rva": 10745440
+  },
+  {
+   "name": "ForcePlayerOntoHorse",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 10271232,
+   "target_rva": 10271232
+  },
+  {
+   "name": "MoveHorseToRiderTransform",
+   "status": "FOUND",
+   "matches": 1,
+   "match_rva": 9679600,
+   "target_rva": 9679600
+  }
+ ]
+}

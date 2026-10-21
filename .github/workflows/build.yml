@@ -1,0 +1,30 @@
+name: build
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  core-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DLW_BUILD_PLUGIN=OFF
+      - run: cmake --build build -j
+      - run: ./build/lw_tests
+      - run: ./build/lwsim demo --data demo-data
+  plugin-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: cmake -S . -B build -A x64 -DLW_BUILD_PLUGIN=ON
+      - run: cmake --build build --config Release
+      - run: build\Release\lw_tests.exe
+      - name: Package
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force dist/plugins | Out-Null
+          Copy-Item build/plugin/Release/LivingWar.asi dist/plugins/
+          Copy-Item plugin/dist/LivingWar.ini, plugin/dist/GotSignatures.ini dist/plugins/
+          Copy-Item build/Release/lwsim.exe dist/
+          Copy-Item INSTALL.md, CREDITS.md dist/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LivingWar-windows
+          path: dist
