@@ -42,7 +42,12 @@ bool LivingWar::start(const std::string& slot, uint64_t seedIfNew, int act) {
     return true;
 }
 
-bool LivingWar::save() { return saves_.save(world_, slot_); }
+bool LivingWar::save() {
+    bool ok = saves_.save(world_, slot_);
+    // Keep the hierarchy page current so it can simply be left open in a browser and refreshed.
+    exportHierarchy((std::filesystem::path(saves_.dataDir()) / "hierarchy.html").string());
+    return ok;
+}
 
 LivingWar::Tracked* LivingWar::tracked(ActorHandle h) {
     auto it = live_.find(h);

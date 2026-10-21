@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.1 — 2026-10-21
+- `hierarchy.html` is rewritten after every save (every fight, every new day), so it can stay open in a browser and be refreshed. The hotkey is optional.
+- The default hierarchy hotkey is Home (F9 clashed in-game).
+- First automatic in-game result: camp leader "Jaghun-u Noyan Altan" (type 42, 322 hp) was detected at spawn, engaged, and cut down with no hotkeys.
+
 ## 0.3.0 — 2026-10-21 (observer: automatic leader tracking)
 - **Leaders are now recognised automatically.** In-game recon showed the game re-sets a camp leader's max health to base x1.75 straight after spawning (types 37: 255→446, 42: 184→322), plus a flat-300 type 35. Replayed on the recon data, the rule caught 3/3 marked leaders with no false leader deaths.
 - Each detected leader gets a Living War identity as he spawns. His hits (SetHealth via the combat path exe+0x694822), his death, soldiers dying around him and Jin's own death are fed into the Nemesis core with no hotkeys.

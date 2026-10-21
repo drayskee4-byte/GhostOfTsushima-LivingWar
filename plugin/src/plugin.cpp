@@ -77,7 +77,7 @@ DWORD WINAPI pluginThread(LPVOID module) {
     Ini ini;
     ini.load((fs::path(pluginDir) / "LivingWar.ini").string());
     lw::Log::setLevel(ini.getBool("General", "DebugLog", false) ? lw::LogLevel::Debug : lw::LogLevel::Info);
-    lw::Log::info("==== Living War 0.3.0 starting ====");
+    lw::Log::info("==== Living War 0.3.1 starting ====");
     if (!ini.getBool("General", "Enabled", true)) { lw::Log::info("disabled in LivingWar.ini"); return 0; }
 
     Sleep(static_cast<DWORD>(ini.getInt("General", "StartDelaySeconds", 10) * 1000));   // let the game finish booting
